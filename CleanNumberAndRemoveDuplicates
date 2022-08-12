@@ -1,0 +1,38 @@
+Sub CleanNumberAndRemoveDuplicates()
+'We have phone numbers in Column U and Column W
+'Phone Numbers contain special characters such as brackets and dashes
+'We have to clean those numbers, add a preceeding zero as per standard phone numbers' format
+'Any duplicated between column U and column W have to be removed from column W
+Dim StrNumber1 As String
+Dim strNumber2 As String
+Dim finishedNumber1 As String
+Dim finishedNumber2 As String
+
+For rowNumber = 2 To Range("U" & Rows.Count).End(xlUp).Row Step 1
+    finishedNumber1 = ""
+    finishedNumber2 = ""
+    StrNumber1 = Cells(rowNumber, "U")
+    strNumber2 = Cells(rowNumber, "W")
+    For Count = 1 To Len(StrNumber1) Step 1
+        If IsNumeric(Mid(StrNumber1, Count, 1)) Then
+           finishedNumber1 = finishedNumber1 & Mid(StrNumber1, Count, 1)
+        End If
+    Next
+    For Count = 1 To Len(strNumber2) Step 1
+        If IsNumeric(Mid(strNumber2, Count, 1)) Then
+            finishedNumber2 = finishedNumber2 & Mid(strNumber2, Count, 1)
+        End If
+    Next
+    Cells(rowNumber, "U") = finishedNumber1
+    If finishedNumber1 = finishedNumber2 Then
+        Cells(rowNumber, "W") = ""
+    Else
+        Cells(rowNumber, "W") = finishedNumber2
+    End If
+    Cells(rowNumber, "V") = ""
+    Cells(rowNumber, "X") = ""
+    
+Next
+Range("U:U").NumberFormat = "0#########"
+Range("W:W").NumberFormat = "0#########"
+End Sub
